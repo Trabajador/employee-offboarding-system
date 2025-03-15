@@ -1,0 +1,22 @@
+<div *ngIf="employee">
+  <button mat-button (click)="goBack()">
+    <mat-icon>chevron_left</mat-icon> Back
+  </button>
+
+  <h2>{{ employee.name }}</h2>
+  <p>{{ employee.department }}</p>
+  <p>{{ employee.email }}</p>
+  <p>Status: {{ employee.status }}</p>
+
+  <h3>Equipments</h3>
+  <mat-table [dataSource]="employee.equipments || []">
+    <ng-container matColumnDef="name">
+      <mat-header-cell *matHeaderCellDef>Equipment</mat-header-cell>
+      <mat-cell *matCellDef="let item">{{ item.name }}</mat-cell>
+    </ng-container>
+    <mat-header-row *matHeaderRowDef="['name']"></mat-header-row>
+    <mat-row *matRowDef="let row; columns: ['name']"></mat-row>
+  </mat-table>
+
+  <button mat-button (click)="openOffboardDialog(employee.id)">Offboard</button>
+</div>

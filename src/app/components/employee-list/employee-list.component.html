@@ -1,0 +1,37 @@
+<mat-form-field>
+  <input matInput placeholder="Search" [(ngModel)]="searchQuery">
+</mat-form-field>
+
+<mat-table [dataSource]="filteredEmployees">
+  <ng-container matColumnDef="name">
+    <mat-header-cell *matHeaderCellDef> Full Name </mat-header-cell>
+    <mat-cell *matCellDef="let employee"> {{ employee.name }} </mat-cell>
+  </ng-container>
+
+  <ng-container matColumnDef="email">
+    <mat-header-cell *matHeaderCellDef> Email </mat-header-cell>
+    <mat-cell *matCellDef="let employee"> {{ employee.email }} </mat-cell>
+  </ng-container>
+
+  <ng-container matColumnDef="department">
+    <mat-header-cell *matHeaderCellDef> Department </mat-header-cell>
+    <mat-cell *matCellDef="let employee"> {{ employee.department }} </mat-cell>
+  </ng-container>
+
+  <ng-container matColumnDef="equipments">
+    <mat-header-cell *matHeaderCellDef> Equipment </mat-header-cell>
+    <mat-cell *matCellDef="let employee">
+      <div *ngFor="let equipment of employee.equipments">
+        {{ equipment.name }}
+      </div>
+    </mat-cell>
+  </ng-container>
+
+  <ng-container matColumnDef="status">
+    <mat-header-cell *matHeaderCellDef> Status </mat-header-cell>
+    <mat-cell *matCellDef="let employee"> {{ employee.status }} </mat-cell>
+  </ng-container>
+
+  <mat-header-row *matHeaderRowDef="displayedColumns"></mat-header-row>
+  <mat-row *matRowDef="let row; columns: displayedColumns;" (click)="viewDetails(row.id)"></mat-row>
+</mat-table>

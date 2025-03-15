@@ -1,0 +1,38 @@
+{
+  "employees": [
+    {
+      "id": "vvv1323",
+      "name": "John Doe",
+      "department": "Engineering",
+      "status": "OFFBOARDED",
+      "email": "some.email@wp.pl",
+      "equipments": [
+        {
+          "id": "aaa123456",
+          "name": "Macbook air"
+        },
+        {
+          "id": "aaa123456",
+          "name": "Magic Mouse"
+        }
+      ]
+    },
+    {
+      "id": "vvv1324",
+      "name": "Jane Smith",
+      "department": "HR",
+      "status": "OFFBOARDED",
+      "email": "jane.smith@wp.pl",
+      "equipments": [
+        {
+          "id": "bbb123456",
+          "name": "Dell XPS"
+        },
+        {
+          "id": "bbb123456",
+          "name": "Logitech Mouse"
+        }
+      ]
+    }
+  ]
+}

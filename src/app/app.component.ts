@@ -1,12 +1,14 @@
 import { Component } from '@angular/core';
-import { RouterOutlet } from '@angular/router';
+import { RouterModule } from '@angular/router';
+import { HttpClientModule } from '@angular/common/http';
 
 @Component({
   selector: 'app-root',
-  imports: [RouterOutlet],
-  templateUrl: './app.component.html',
-  styleUrl: './app.component.scss'
+  standalone: true,
+  imports: [
+    RouterModule,
+    HttpClientModule,
+  ],
+  template: `<router-outlet></router-outlet>`,
 })
-export class AppComponent {
-  title = 'employee-offboarding-system';
-}
+export class AppComponent {}
