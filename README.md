@@ -108,22 +108,3 @@ Processes an employee's offboarding with the following data structure:
   "email": "string"
 }
 ```
-
-## Assumptions
-
-1. Authentication and authorization are handled by a separate system
-2. Equipment is assigned/unassigned through a separate system
-3. Offboarding is a one-way process (cannot be undone)
-4. All employees must have unique IDs
-5. The system operates in a single timezone
-
-## Future Improvements
-
-1. Add unit and integration tests
-2. Add loading skeletons
-3. Add pagination for large datasets
-4. Implement sorting functionality
-5. Add equipment assignment/unassignment
-6. Add audit logging
-7. Add multi-language support
-8. Implement advanced search filters
