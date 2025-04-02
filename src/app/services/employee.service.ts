@@ -1,39 +1,56 @@
 import { Injectable } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
-import { Observable } from 'rxjs';
+import { Observable, switchMap } from 'rxjs';
 import { Employee } from '../models/employee.model';
 
+export type EmployeeStatus = 'ACTIVE' | 'OFFBOARDED' | 'PENDING';
+
+export interface OffboardingData {
+  receiver: string;
+  phone: string;
+  email: string;
+  streetLine: string;
+  city: string;
+  postalCode: string;
+  country: string;
+  notes?: string;
+}
+
 @Injectable({
-  providedIn: 'root',
+  providedIn: 'root'
 })
 export class EmployeeService {
-  private apiUrl = 'http://localhost:3000';
+  private apiUrl = 'http://localhost:3000/employees';
+
+  // Employee status constants
+  static readonly STATUS = {
+    ACTIVE: 'ACTIVE' as const,
+    OFFBOARDED: 'OFFBOARDED' as const,
+    PENDING: 'PENDING' as const
+  };
 
   constructor(private http: HttpClient) {}
 
   getEmployees(): Observable<Employee[]> {
-    return this.http.get<Employee[]>(`${this.apiUrl}/employees`);
+    return this.http.get<Employee[]>(this.apiUrl);
   }
 
   getEmployeeById(id: string): Observable<Employee> {
-    return this.http.get<Employee>(`${this.apiUrl}/employees/${id}`);
+    return this.http.get<Employee>(`${this.apiUrl}/${id}`);
   }
 
-  offboardEmployee(id: string, data: any): Observable<any> {
-    return this.http.post(`${this.apiUrl}/users/${id}/offboard`, {
-      address: {
-        streetLine1: data.streetLine,
-        country: data.country,
-        postalCode: data.postalCode,
-        receiver: data.receiver
-      },
-      notes: data.notes,
-      phone: data.phone,
-      email: data.email
-    });
+  updateEmployeeStatus(employeeId: string, status: EmployeeStatus): Observable<void> {
+    return this.http.patch<void>(`${this.apiUrl}/${employeeId}`, { status });
   }
 
-  updateEmployeeStatus(id: string, status: string): Observable<Employee> {
-    return this.http.patch<Employee>(`${this.apiUrl}/employees/${id}`, { status });
+  submitOffboardingData(employeeId: string, offboardingData: OffboardingData): Observable<void> {
+    return this.http.patch<void>(`${this.apiUrl}/${employeeId}`, { offboardingData });
+  }
+
+  // Combines both updating status and handling offboarding data
+  processOffboarding(employeeId: string, offboardingData: OffboardingData): Observable<void> {
+    return this.updateEmployeeStatus(employeeId, EmployeeService.STATUS.OFFBOARDED).pipe(
+      switchMap(() => this.submitOffboardingData(employeeId, offboardingData))
+    );
   }
 }

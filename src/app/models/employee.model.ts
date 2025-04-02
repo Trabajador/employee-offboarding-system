@@ -1,13 +1,27 @@
+import { EmployeeStatus } from '../services/employee.service';
+
 export interface Equipment {
-  id: string;
   name: string;
+  type: string;
+  serialNumber: string;
+}
+
+export interface OffboardingData {
+  receiver: string;
+  streetLine: string;
+  city: string;
+  postalCode: string;
+  email: string;
+  phone: string;
+  notes?: string;
 }
 
 export interface Employee {
   id: string;
   name: string;
-  department: string;
-  status: string;
   email: string;
-  equipments: Equipment[];
+  department: string;
+  status: EmployeeStatus;
+  equipment: Equipment[];
+  offboardingData?: OffboardingData;
 }

@@ -1,59 +1,129 @@
-# EmployeeOffboardingSystem
+# Employee Offboarding System
 
-This project was generated using [Angular CLI](https://github.com/angular/angular-cli) version 19.0.7.
+A modern Angular application for managing employee offboarding processes, with a focus on equipment return management.
 
-## Development server
+## Features
 
-To start a local development server, run:
+- View and search employees
+- Detailed employee information view
+- Equipment tracking
+- Offboarding process with form validation
+- Real-time state updates without page reloads
 
-```bash
-ng serve
+## Tech Stack
+
+- Angular 17
+- Angular Material
+- RxJS
+- JSON Server (for mock backend)
+
+## Prerequisites
+
+- Node.js (v18 or later)
+- npm (v9 or later)
+
+## Setup Instructions
+
+1. Clone the repository:
+   ```bash
+   git clone <repository-url>
+   cd employee-offboarding-system
+   ```
+
+2. Install dependencies:
+   ```bash
+   npm install
+   ```
+
+3. Start both the mock server and the application:
+   ```bash
+   npm start
+   ```
+   This will start both:
+   - Mock API server at http://localhost:3000
+   - Angular application at http://localhost:4200
+
+## Project Structure
+
+```
+src/
+├── app/
+│   ├── components/
+│   │   ├── employee-list/       # Main dashboard
+│   │   ├── employee-details/    # Employee details view
+│   │   └── offboard-dialog/     # Offboarding form dialog
+│   ├── models/
+│   │   ├── employee.model.ts    # Data interfaces
+│   │   └── async-data.model.ts  # Async state wrapper
+│   └── services/
+│       ├── employee.service.ts  # API communication
+│       └── employee-state.service.ts  # State management
 ```
 
-Once the server is running, open your browser and navigate to `http://localhost:4200/`. The application will automatically reload whenever you modify any of the source files.
+## Features in Detail
 
-## Code scaffolding
+### Employee List
+- Displays all employees in a Material table
+- Search functionality filters by name or department
+- Click on a row to view employee details
+- Visual indicators for offboarded employees
 
-Angular CLI includes powerful code scaffolding tools. To generate a new component, run:
+### Employee Details
+- Comprehensive employee information
+- Equipment inventory table
+- Offboarding action for active employees
 
-```bash
-ng generate component component-name
+### Offboarding Process
+- Form with validation for:
+  - Receiver name
+  - Street address
+  - City
+  - Postal code
+  - Email
+  - Phone
+  - Optional notes
+- Real-time state updates
+- Automatic navigation after successful offboarding
+
+## API Contract
+
+### GET /employees
+Returns a list of all employees with their details and equipment.
+
+### GET /employees/:id
+Returns detailed information about a specific employee.
+
+### POST /employees/:id/offboard
+Processes an employee's offboarding with the following data structure:
+```json
+{
+  "address": {
+    "streetLine1": "string",
+    "country": "string",
+    "postalCode": "string",
+    "receiver": "string"
+  },
+  "notes": "string",
+  "phone": "string",
+  "email": "string"
+}
 ```
 
-For a complete list of available schematics (such as `components`, `directives`, or `pipes`), run:
+## Assumptions
 
-```bash
-ng generate --help
-```
+1. Authentication and authorization are handled by a separate system
+2. Equipment is assigned/unassigned through a separate system
+3. Offboarding is a one-way process (cannot be undone)
+4. All employees must have unique IDs
+5. The system operates in a single timezone
 
-## Building
+## Future Improvements
 
-To build the project run:
-
-```bash
-ng build
-```
-
-This will compile your project and store the build artifacts in the `dist/` directory. By default, the production build optimizes your application for performance and speed.
-
-## Running unit tests
-
-To execute unit tests with the [Karma](https://karma-runner.github.io) test runner, use the following command:
-
-```bash
-ng test
-```
-
-## Running end-to-end tests
-
-For end-to-end (e2e) testing, run:
-
-```bash
-ng e2e
-```
-
-Angular CLI does not come with an end-to-end testing framework by default. You can choose one that suits your needs.
-
-## Additional Resources
-
-For more information on using the Angular CLI, including detailed command references, visit the [Angular CLI Overview and Command Reference](https://angular.dev/tools/cli) page.
+1. Add unit and integration tests
+2. Add loading skeletons
+3. Add pagination for large datasets
+4. Implement sorting functionality
+5. Add equipment assignment/unassignment
+6. Add audit logging
+7. Add multi-language support
+8. Implement advanced search filters

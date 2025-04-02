@@ -1,36 +1,70 @@
 {
   "employees": [
     {
-      "id": "vvv1323",
+      "id": "emp001",
       "name": "John Doe",
       "department": "Engineering",
-      "status": "OFFBOARDED",
-      "email": "some.email@wp.pl",
-      "equipments": [
+      "status": "ACTIVE",
+      "email": "john.doe@company.com",
+      "equipment": [
         {
-          "id": "aaa123456",
-          "name": "Macbook air"
+          "id": "eq001",
+          "name": "MacBook Pro",
+          "type": "Laptop",
+          "serialNumber": "MBP2023001"
         },
         {
-          "id": "aaa123456",
-          "name": "Magic Mouse"
+          "id": "eq002",
+          "name": "Magic Mouse",
+          "type": "Accessory",
+          "serialNumber": "MM2023001"
         }
       ]
     },
     {
-      "id": "vvv1324",
+      "id": "emp002",
       "name": "Jane Smith",
-      "department": "HR",
+      "department": "Design",
       "status": "OFFBOARDED",
-      "email": "jane.smith@wp.pl",
-      "equipments": [
+      "email": "jane.smith@company.com",
+      "equipment": [
         {
-          "id": "bbb123456",
-          "name": "Dell XPS"
+          "id": "eq003",
+          "name": "iPad Pro",
+          "type": "Tablet",
+          "serialNumber": "IPP2023001"
+        }
+      ],
+      "offboardingData": {
+        "address": {
+          "streetLine1": "123 Main St",
+          "country": "United States",
+          "postalCode": "12345",
+          "receiver": "Jane Smith"
+        },
+        "notes": "All equipment returned in good condition",
+        "phone": "+1234567890",
+        "email": "jane.smith@personal.com"
+      }
+    },
+    {
+      "id": "emp003",
+      "name": "Bob Wilson",
+      "department": "Marketing",
+      "status": "ACTIVE",
+      "email": "bob.wilson@company.com",
+      "equipment": [
+        {
+          "id": "eq001",
+          "name": "MacBook Pro",
+          "type": "Laptop",
+          "serialNumber": "MBP2023001"
         },
         {
-          "id": "bbb123456",
-          "name": "Logitech Mouse"
+          "id": "eq002",
+          "name": "Magic Mouse",
+          "type": "Accessory",
+          "serialNumber": "MM2023001"
         }
       ]
     }

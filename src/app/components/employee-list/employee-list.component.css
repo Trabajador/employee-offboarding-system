@@ -1,0 +1,53 @@
+.employee-list-container {
+  padding: 20px;
+}
+
+.search-field {
+  width: 100%;
+  max-width: 500px;
+  margin-bottom: 20px;
+}
+
+table {
+  width: 100%;
+}
+
+.loading-container {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  padding: 40px;
+  gap: 20px;
+}
+
+.error-container {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  padding: 40px;
+  gap: 20px;
+  text-align: center;
+}
+
+.error-message {
+  color: #f44336;
+  font-size: 16px;
+}
+
+.no-results {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  padding: 40px;
+  color: rgba(0, 0, 0, 0.54);
+  font-size: 16px;
+}
+
+/* Responsive table */
+@media screen and (max-width: 600px) {
+  .mat-column-department {
+    display: none;
+  }
+}

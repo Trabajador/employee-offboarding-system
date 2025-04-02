@@ -1,3 +1,72 @@
+.employee-list {
+  max-width: 1200px;
+  margin: 2rem auto;
+  padding: 0 1rem;
+
+  .search-field {
+    width: 100%;
+    margin-bottom: 1rem;
+  }
+
+  .employee-table {
+    width: 100%;
+    margin-top: 1rem;
+  }
+
+  .loading-state,
+  .error-state,
+  .empty-state {
+    text-align: center;
+    padding: 2rem;
+
+    p {
+      margin-bottom: 1rem;
+      color: rgba(0, 0, 0, 0.6);
+    }
+  }
+
+  .error-state {
+    p {
+      color: #f44336;
+    }
+  }
+
+  .equipment-list {
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+
+    .info-icon {
+      font-size: 18px;
+      width: 18px;
+      height: 18px;
+      color: rgba(0, 0, 0, 0.54);
+      cursor: help;
+    }
+  }
+
+  .no-equipment {
+    color: rgba(0, 0, 0, 0.38);
+    font-style: italic;
+  }
+}
+
+// Table styles
+.mat-mdc-table {
+  background: white;
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+  border-radius: 4px;
+}
+
+.mat-mdc-header-cell {
+  font-weight: 600;
+  color: rgba(0, 0, 0, 0.87);
+}
+
+.mat-mdc-cell {
+  color: rgba(0, 0, 0, 0.87);
+}
+
 mat-table {
   width: 100%;
   margin-top: 20px;
@@ -14,14 +83,19 @@ mat-header-cell, mat-cell {
 }
 
 .mat-mdc-header-row {
-  font-weight: bold;
-  background-color: gray;
+  background-color: #fafafa;
 }
 
-mat-row {
+.mat-mdc-row {
   cursor: pointer;
-}
+  transition: background-color 0.2s ease;
 
-mat-row:hover {
-  background-color: #f9f9f9;
+  &:hover {
+    background-color: rgba(0, 0, 0, 0.04);
+  }
+
+  &.offboarded {
+    background-color: rgba(0, 0, 0, 0.02);
+    color: rgba(0, 0, 0, 0.54);
+  }
 }

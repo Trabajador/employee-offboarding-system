@@ -1,75 +1,88 @@
-import { Component, OnInit } from '@angular/core';
-import { ActivatedRoute, Router } from '@angular/router';
-import { EmployeeService } from '../../services/employee.service';
-import { EmployeeStateService } from '../../services/employee-state.service';
-import { Employee } from '../../models/employee.model';
+import { Component, OnDestroy, OnInit } from '@angular/core';
+import { CommonModule } from '@angular/common';
+import { ActivatedRoute, Router, RouterModule } from '@angular/router';
 import { MatTableModule } from '@angular/material/table';
 import { MatButtonModule } from '@angular/material/button';
 import { MatIconModule } from '@angular/material/icon';
-import { CommonModule } from '@angular/common';
-import { MatDialog } from '@angular/material/dialog';
+import { MatCardModule } from '@angular/material/card';
+import { MatDialog, MatDialogModule } from '@angular/material/dialog';
+import { Observable, Subject, filter, map, switchMap, takeUntil } from 'rxjs';
+import { Employee } from '../../models/employee.model';
+import { EmployeeStateService } from '../../services/employee-state.service';
 import { OffboardDialogComponent } from '../offboard-dialog/offboard-dialog.component';
+import { MatProgressSpinnerModule } from '@angular/material/progress-spinner';
 
 @Component({
   selector: 'app-employee-details',
   standalone: true,
   imports: [
     CommonModule,
+    RouterModule,
     MatTableModule,
     MatButtonModule,
     MatIconModule,
+    MatCardModule,
+    MatDialogModule,
+    MatProgressSpinnerModule
   ],
   templateUrl: './employee-details.component.html',
-  styleUrls: ['./employee-details.component.css'],
+  styleUrls: ['./employee-details.component.scss']
 })
-export class EmployeeDetailsComponent implements OnInit {
-  employee: Employee | undefined;
+export class EmployeeDetailsComponent implements OnInit, OnDestroy {
+  employee$!: Observable<Employee | undefined>;
+  displayedColumns: string[] = ['name', 'type', 'serialNumber'];
+  private destroy$ = new Subject<void>();
 
   constructor(
     private route: ActivatedRoute,
-    private employeeService: EmployeeService,
-    private employeeStateService: EmployeeStateService,
     private router: Router,
+    private employeeState: EmployeeStateService,
     private dialog: MatDialog
   ) {}
 
   ngOnInit(): void {
-    const id = this.route.snapshot.paramMap.get('id');
-    if (id) {
-      this.employeeService.getEmployeeById(id).subscribe((data) => {
-        this.employee = data;
-      });
-    }
+    this.employee$ = this.route.paramMap.pipe(
+      map(params => params.get('id')),
+      switchMap(id => this.employeeState.getEmployeeById(id || ''))
+    );
   }
 
-  goBack(): void {
-    this.router.navigate(['/']);
+  ngOnDestroy(): void {
+    this.destroy$.next();
+    this.destroy$.complete();
   }
 
-  openOffboardDialog(employeeId: string | undefined): void {
-    if (employeeId) {
+  onOffboard(): void {
+    const employee = this.employee$.pipe(filter((emp): emp is Employee => emp !== undefined));
+
+    employee.pipe(
+      takeUntil(this.destroy$)
+    ).subscribe(emp => {
       const dialogRef = this.dialog.open(OffboardDialogComponent, {
-        width: '500px',
-        data: { employeeId },
+        width: '800px',
+        data: { employee: emp },
         autoFocus: false,
         disableClose: true
       });
 
-      dialogRef.afterClosed().subscribe((result) => {
-        if (result) {
-          this.employeeService.updateEmployeeStatus(employeeId, 'OFFBOARDED').subscribe(() => {
-            if (this.employee) {
-              this.employee.status = 'OFFBOARDED';
-            }
-
-            this.employeeService.getEmployees().subscribe((employees) => {
-              this.employeeStateService.updateEmployees(employees);
+      dialogRef.afterClosed()
+        .pipe(takeUntil(this.destroy$))
+        .subscribe(result => {
+          if (result) {
+            this.employeeState.processOffboarding(emp.id, result).subscribe({
+              next: () => {
+                this.router.navigate(['/']);
+              },
+              error: (error) => {
+                console.error('Error offboarding employee:', error);
+              }
             });
+          }
+        });
+    });
+  }
 
-            this.router.navigate(['/']);
-          });
-        }
-      });
-    }
+  goBack(): void {
+    this.router.navigate(['/']);
   }
 }
